@@ -185,11 +185,19 @@
             if (itemNameInput.value.trim() == '' || itemAmountInput.value.trim() == '') {
                 Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong!',
-                footer: '<a href="">Why do I have this issue?</a>'
+                title: 'Peringatan !!!',
+                text: 'Field Didalam Apps Ini Tidak Boleh Kosong',
+                footer: '<a href="https://github.com/itsmebroarif">Info Developer</a>'
                 })
             } else {
+
+                Swal.fire({
+                icon: 'success',
+                title: 'Berhasil !!!',
+                text: 'Data berhasi dimasukan kedalam apps',
+                footer: '<a href="https://github.com/itsmebroarif">Info Developer</a>'
+                })
+
                 let transaction = {
                     id: randomId(),
                     text: itemNameInput.value,
