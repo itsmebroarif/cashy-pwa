@@ -1,291 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-        crossorigin="anonymous" />
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap"
-        rel="stylesheet" />
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
-    <!-- Title -->
-    <title>Money Management</title>
-    <!-- Internal CSS -->
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-            font-weight: 600;
-        }
-
-        h1,
-        h4 {
-            font-weight: 800;
-        }
-
-        h3 {
-            font-weight: 700;
-        }
-
-        .history-item {
-            border-left: 8px solid transparent;
-        }
-
-        li {
-            font-weight: 600;
-        }
-
-        .minus {
-            border-color: #dc3545;
-        }
-
-        .plus {
-            border-color: #039e0b;
-        }
-
-        .history,
-        .copyright {
-            background: #3d3d3d;
-        }
-
-        .links a {
-            font-size: 20px;
-            margin: 0 5px;
-            color: #ffffff;
-        }
-
-        .delete-history-item {
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money Management App</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
-<body class="bg-dark text-white">
-    <div class="money-management py-5 px-3 px-md-5">
-        <div class="container">
-            <div class="row justify-content-center g-5">
-
-                <!-- Judul Aplikasi -->
-                <div class="col-lg-8 text-center">
-                    <h1 class="title">Pendataan Keuangan</h1>
-                </div>
-
-                <!-- Data Keuangan -->
-                <div class="col-md-8">
-                    <h4 class="mb-3">
-                        <span class="bg-warning text-dark p-2 rounded d-inline-block mb-1">Uang Masuk </span>
-                    </h4>
-                    <h3 class="current-balance bg-white text-dark rounded p-2 my-3">
-                        $0.00
-                    </h3>
-                    <div class="income-expense bg-white shadow-sm rounded p-4 mt-3">
-                        <div class="d-flex flex-wrap justify-content-between">
-                            <div class="income-box">
-                                <h3 class="text-dark">Terkumpul </h3>
-                                <h4 class="income text-success">$0.00</h4>
-                            </div>
-
-                            <div class="expense-box">
-                                <h3 class="text-dark">Kurang</h3>
-                                <h4 class="expense text-danger">$0.00</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Form Input Masukan Tabel -->
-                <div class="col-12">
-                    <form class="form-group row g-4 justify-content-center mt-2 add-transaction">
-                        <div class="col-lg-8">
-                            <h4>
-                                <span class="bg-warning text-dark p-2 rounded">Masukan Data</span>
-                            </h4>
-                        </div>
-                        <div class="col-lg-8">
-                            <input class="form-control p-2 item-name-input" type="name" placeholder="Nama" />
-                        </div>
-                        <div class="col-lg-8">
-                            <input class="form-control p-2 item-amount-input" type="text" placeholder="Nominal" />
-                            <b class="mt-2 d-block text-warning">
-                                <i>Gunakan Tanda (-)Untuk Target Terkumpulnya Uang Dan (+)
-                                    Untuk Pemasukan.</i>
-                            </b>
-                        </div>
-                        <div class="col-lg-8">
-                            <button type="button" class="btn btn-primary add-transaction-button">
-                                Masukan Data
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Tabel Data -->
-                <div class="col-md-8">
-                    <h4 class="mt-5 mb-3">
-                        <span class="bg-warning text-dark p-2 rounded d-inline-block mb-1">Data Hari Ini </span>
-                    </h4>
-                    <div class="history p-4 rounded">
-                        <ul class="p-0">
-                        </ul>
-                    </div>
-                </div>
-
-
-
-            </div>
-        </div>
+<body>
+  <div id="app" class="container">
+    <h1 class="my-5">Money Management App</h1>
+    <form @submit.prevent="addTransaction">
+      <div class="mb-3">
+        <label for="type" class="form-label">Type</label>
+        <select v-model="newTransaction.type" class="form-select" id="type" required>
+          <option value="" disabled>Select Type</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="amount" class="form-label">Amount</label>
+        <input type="number" v-model="newTransaction.amount" class="form-control" id="amount" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea v-model="newTransaction.description" class="form-control" id="description" rows="3"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Transaction</button>
+    </form>
+    <hr>
+    <div v-if="transactions.length === 0" class="alert alert-info">
+      No transactions available.
     </div>
-
-    <div class="copyright text-center py-4 mt-5">
-        <p class="mb-0 lead">
-            Created By
-            <a class="text-warning" href="https://api.whatsapp.com/send?phone=62895343226354" target="_blank"
-                rel="noopener noreferrer">Code With Arif</a>
-        </p>
-        <div class="links mt-3">
-            <a href="https://www.facebook.com/arif.alexander.56/" target="_blank" rel="noopener noreferrer"><i
-                    class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/itsmebroarif.dev/" target="_blank" rel="noopener noreferrer"><i
-                    class="fab fa-instagram"></i></a>
-            <a href="https://github.com/itsmebroarif" target="_blank" rel="noopener noreferrer"><i
-                    class="fab fa-github"></i></a>
+    <div v-else>
+      <div class="card mb-3" v-for="transaction in transactions" :key="transaction.id">
+        <div class="card-body">
+          <h5 class="card-title">{{ transaction.type }}</h5>
+          <p class="card-text">Amount: {{ transaction.amount }}</p>
+          <p class="card-text">Description: {{ transaction.description }}</p>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- JS -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        // Selectors
-        let currentBalance = document.querySelector('.current-balance');
-        let income = document.querySelector('.income');
-        let expense = document.querySelector('.expense');
-        let historyUl = document.querySelector('.history ul');
-        let addTransaction = document.querySelector('.add-transaction-button');
-        let itemNameInput = document.querySelector('.item-name-input');
-        let itemAmountInput = document.querySelector('.item-amount-input');
-
-        // Dummy Transictions
-        let dummyTrans = [
-
-        ];
-
-        // All Transictions
-        let transactions = dummyTrans;
-
-        // Get Value From User
-        function addTransactionFunc(e) {
-            e.preventDefault();
-            if (itemNameInput.value.trim() == '' || itemAmountInput.value.trim() == '') {
-                Swal.fire({
-                icon: 'error',
-                title: 'Peringatan !!!',
-                text: 'Field Didalam Apps Ini Tidak Boleh Kosong',
-                footer: '<a href="https://github.com/itsmebroarif">Info Developer</a>'
-                })
-            } else {
-
-                Swal.fire({
-                icon: 'success',
-                title: 'Berhasil !!!',
-                text: 'Data berhasi dimasukan kedalam apps',
-                footer: '<a href="https://github.com/itsmebroarif">Info Developer</a>'
-                })
-
-                let transaction = {
-                    id: randomId(),
-                    text: itemNameInput.value,
-                    amount: Number(itemAmountInput.value),
-                };
-                transactions.push(transaction);
-                addToDom(transaction);
-                updateBalance(transaction);
-                itemNameInput.value = '';
-                itemAmountInput.value = '';
-            }
+  <!-- Vue.js 3 -->
+  <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.prod.js"></script>
+  <!-- Bootstrap JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          newTransaction: {
+            type: '',
+            amount: '',
+            description: ''
+          },
+          transactions: []
+        };
+      },
+      methods: {
+        addTransaction() {
+          const transaction = {
+            id: Date.now(),
+            ...this.newTransaction
+          };
+          this.transactions.push(transaction);
+          this.newTransaction.type = '';
+          this.newTransaction.amount = '';
+          this.newTransaction.description = '';
+          this.saveToLocalStorage();
+        },
+        saveToLocalStorage() {
+          localStorage.setItem('transactions', JSON.stringify(this.transactions));
+        },
+        loadFromLocalStorage() {
+          const storedTransactions = localStorage.getItem('transactions');
+          if (storedTransactions) {
+            this.transactions = JSON.parse(storedTransactions);
+          }
         }
+      },
+      mounted() {
+        this.loadFromLocalStorage();
+      }
+    });
 
-        // Random id
-        function randomId() {
-            return Math.floor(Math.random() * 1000000000000);
-        }
-
-        // Remove Transaction
-        function removeTransaction(id) {
-            transactions = transactions.filter((transaction) => transaction.id !== id);
-            console.log(transactions);
-            init();
-        }
-
-        // Add History List to DOM
-        function addToDom(transaction) {
-            let sign = transaction.amount < 0 ? '-' : '+';
-            // Create History Item
-            let historyItem = document.createElement('li');
-            historyItem.classList.add(
-                'history-item',
-                'd-flex',
-                'flex-wrap',
-                'justify-content-between',
-                'bg-white',
-                'shadow-sm',
-                'p-2',
-                'my-3',
-                'rounded'
-            );
-            historyItem.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
-            historyItem.innerHTML = `
-        <span class="item-name p-2 text-dark">${transaction.text}</span>
-        <span class="item-amount ms-auto p-2 text-dark">${
-          sign + Number(Math.abs(transaction.amount)).toFixed(2)
-        }</span>
-        <span onclick="removeTransaction(
-          ${transaction.id})" class="delete-history-item bg-danger p-2 rounded"
-        ><img
-          src="trash.svg"
-          alt="trash"
-          class="img-fluid text-white"
-      /></span>`;
-            historyUl.appendChild(historyItem);
-        }
-
-        // Update Balance
-        function updateBalance() {
-            let amounts = transactions.map((transaction) => transaction.amount);
-            let currentBalanceVal = amounts.reduce((acc, item) => acc + item, 0);
-            let incomeBalance = amounts
-                .filter((amount) => amount > 0)
-                .reduce((acc, item) => acc + item, 0);
-            let expenseBalance = amounts
-                .filter((amount) => amount < 0)
-                .reduce((acc, item) => acc + item, 0);
-            //  Udating Balance in DOM
-            if (Math.abs(incomeBalance) < Math.abs(expenseBalance)) {
-                currentBalance.innerHTML = '-RP' + Math.abs(currentBalanceVal).toFixed(0);
-            } else {
-                currentBalance.innerHTML = 'RP' + Math.abs(currentBalanceVal).toFixed(0);
-            }
-            income.innerHTML = `$${Math.abs(incomeBalance).toFixed(0)} 000 | Ribu`;
-            expense.innerHTML = `$${Math.abs(expenseBalance).toFixed(0)} 000 | Ribu`;
-        }
-
-        // Initialize
-        function init() {
-            historyUl.innerHTML = '';
-            transactions.forEach(addToDom);
-            updateBalance();
-        }
-        init();
-
-        // Form Submit
-        addTransaction.addEventListener('click', addTransactionFunc);
-    </script>
+    app.mount('#app');
+  </script>
 </body>
-
 </html>
