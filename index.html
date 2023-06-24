@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,6 +43,10 @@
         </div>
       </div>
     </div>
+    <hr>
+    <div class="mt-3">
+      <h4>Total Balance: {{ totalBalance }}</h4>
+    </div>
   </div>
 
   <!-- Vue.js 3 -->
@@ -85,6 +89,19 @@
           if (storedTransactions) {
             this.transactions = JSON.parse(storedTransactions);
           }
+        }
+      },
+      computed: {
+        totalBalance() {
+          let total = 0;
+          this.transactions.forEach(transaction => {
+            if (transaction.type === 'income') {
+              total += Number(transaction.amount);
+            } else {
+              total -= Number(transaction.amount);
+            }
+          });
+          return total;
         }
       },
       mounted() {
