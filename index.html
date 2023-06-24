@@ -10,43 +10,51 @@
 <body>
   <div id="app" class="container">
     <h1 class="my-5">Money Management App</h1>
-    <form @submit.prevent="addTransaction">
-      <div class="mb-3">
-        <label for="type" class="form-label">Type</label>
-        <select v-model="newTransaction.type" class="form-select" id="type" required>
-          <option value="" disabled>Select Type</option>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="amount" class="form-label">Amount</label>
-        <input type="number" v-model="newTransaction.amount" class="form-control" id="amount" required>
-      </div>
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea v-model="newTransaction.description" class="form-control" id="description" rows="3"></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary">Add Transaction</button>
-    </form>
-    <hr>
-    <div v-if="transactions.length === 0" class="alert alert-info">
-      No transactions available.
-    </div>
-    <div v-else>
-      <div class="card mb-3" v-for="transaction in transactions" :key="transaction.id">
-        <div class="card-body">
-          <h5 class="card-title">{{ transaction.type }}</h5>
-          <p class="card-text">Amount: {{ transaction.amount }}</p>
-          <p class="card-text">Description: {{ transaction.description }}</p>
-          <button class="btn btn-danger" @click="deleteTransaction(transaction.id)">Delete</button>
-        </div>
-      </div>
-    </div>
-    <hr>
     <div class="mt-3">
       <h4>Total Balance: {{ totalBalance }}</h4>
     </div>
+    <div class="row">
+      <div class="col">
+        <form @submit.prevent="addTransaction">
+          <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <select v-model="newTransaction.type" class="form-select" id="type" required>
+              <option value="" disabled>Select Type</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="number" v-model="newTransaction.amount" class="form-control" id="amount" required>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea v-model="newTransaction.description" class="form-control" id="description" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Add Transaction</button>
+        </form>
+      </div>
+      <div class="col">
+        <div v-if="transactions.length === 0" class="alert alert-info">
+          No transactions available.
+        </div>
+        <div v-else>
+          <div class="card mb-3" v-for="transaction in transactions" :key="transaction.id">
+            <div class="card-body">
+              <h5 class="card-title">{{ transaction.type }}</h5>
+              <p class="card-text">Amount: {{ transaction.amount }}</p>
+              <p class="card-text">Description: {{ transaction.description }}</p>
+              <button class="btn btn-danger" @click="deleteTransaction(transaction.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  
+
   </div>
 
   <!-- Vue.js 3 -->
